@@ -17,8 +17,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class RabbitSender {
 
-    @Value("${spring.cloud.stream.binders.platformRabbit.environment.spring.rabbitmq.username}")
-    protected String username;
+    protected String username = "guest";
     public static final String NOTIFICATION_ORCHESTRATOR_BINDING = "output-request";
     private final StreamBridge streamBridge;
 

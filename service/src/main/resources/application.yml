@@ -15,12 +15,52 @@ spring:
     locations: classpath:db/migration/postgres
     validate-on-migrate: true
 
+  rabbitmq:
+    publisher-returns: true
+    publisher-confirm-type: correlated
+
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/auth/realms/test
           jwk-set-uri: http://localhost:8080/auth/realms/test/protocol/openid-connect/certs
+
+  cloud:
+    stream:
+      bindings:
+        output-request:
+          destination: request-processor.output
+        input-in-0:
+          group: request-processor.input
+          destination: request-processor
+          consumer:
+            batch-mode: true
+      rabbit:
+        bindings:
+          input-in-0:
+            consumer:
+              auto-bind-dlq: true
+              batch-size: 10
+              declare-exchange: true
+              exchange-type: direct
+              binding-routing-key: some-input-routing-key
+          output-request:
+            producer:
+              useConfirmHeader: true
+              declare-exchange: true
+              exchange-type: direct
+              routingKeyExpression: some-output-routing-key
+      binders:
+        platformRabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
 
 spring-doc:
   swagger-ui:
