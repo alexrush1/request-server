@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.0'
+    id "io.freefair.lombok" version "8.0.1"
+}
+
+group = 'com.alexrush1'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+    ext {
+        lombokVersion = "1.18.28"
+        springBootVersion = "3.1.0"
+        springVersion = "6.0.9"
+        postgresDriverVersion = "42.6.0"
+        flywayVersion = "9.19.3"
+        mapstructVersion = "1.5.5.Final"
+        springCloudDependenciesVersion = "4.0.3"
+    }
+}
+
+dependencies {
+    implementation project(":service")
+}
+
+test {
+    useJUnitPlatform()
+}

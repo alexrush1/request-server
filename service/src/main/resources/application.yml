@@ -1,0 +1,38 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: "ant-path-matcher"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dbrequestserver?prepareThreshold=0
+    username: dbrequestserver
+    password: dbrequestserver
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    encoding: UTF-8
+    sql-migration-prefix: migration
+    schemas: public
+    locations: classpath:db/migration/postgres
+    validate-on-migrate: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/test
+          jwk-set-uri: http://localhost:8080/auth/realms/test/protocol/openid-connect/certs
+
+spring-doc:
+  swagger-ui:
+    path: /request-server/swagger-ui.html
+  api-docs:
+    path: /request-server/api-docs
+
+management:
+  server:
+    base-path: /manage
+  endpoints:
+    web:
+      base-path: /manage
+      exposure:
+        include: [ 'health', 'info', 'env', 'metrics', 'loggers' ]

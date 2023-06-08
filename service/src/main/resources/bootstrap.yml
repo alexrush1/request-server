@@ -1,0 +1,37 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output-request:
+          destination: request-processor.output
+        input-in-0:
+          group: request-processor.input
+          destination: request-processor
+          consumer:
+            batch-mode: true
+      rabbit:
+        bindings:
+          input-in-0:
+            consumer:
+              auto-bind-dlq: true
+              batch-size: 10
+              declare-exchange: true
+              exchange-type: direct
+              binding-routing-key: some-input-routing-key
+          output-request:
+            producer:
+              useConfirmHeader: true
+              declare-exchange: true
+              exchange-type: direct
+              routingKeyExpression: some-output-routing-key
+      binders:
+        platformRabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: guest
+                password: guest
+      source: output

@@ -1,0 +1,4 @@
+rootProject.name = 'request-server'
+include 'api'
+include 'service'
+
